@@ -25,7 +25,7 @@ export default function HomePage(props) {
     }, []);
 
     return (
-        <Container>
+        <Container fluid="true">
             <Row>
                 <Col sm={4}><Users users={users} /></Col>
                 <Col sm={8}>sm8</Col>

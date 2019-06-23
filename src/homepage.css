@@ -1,0 +1,51 @@
+.user-card {
+    display: flex;
+    height: 80px;
+}
+
+.user-profile-img {
+    flex-grow: 1;
+    /* width: 60px; */
+    height: 100%; 
+    padding-right: 15px;
+}
+
+.user-profile-img-container {
+    width:60px;
+    height: 60px;
+}
+
+.user-profile-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.user-content-alignment {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-content-main {
+    flex-grow: 4;
+    /* overflow: hidden; */
+    /* position: relative; */
+    /* text-overflow: ellipsis; */
+    white-space: nowrap;
+}
+
+.user-content-support {
+    flex-grow: 1;
+    white-space: nowrap;
+}
+
+.user-username {
+    font-weight: 600;
+}
+
+.user-timestamp {
+    color: rgba(0,0,0, 0.4);
+}
+
+.user-last-message {
+    color: rgba(0,0,0, 0.5);
+}
