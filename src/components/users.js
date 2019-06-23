@@ -13,7 +13,7 @@ import Badge from 'react-bootstrap/Badge';
 
 function UserCard(user) {
     return (
-        <Col key={user.uid} sm={12} className="user-card">
+        <Col key={user.id} sm={12} className="user-card">
             <div className="user-profile-img">
                 <div className="user-profile-img-container">
 
@@ -22,7 +22,7 @@ function UserCard(user) {
                 {/* <img src="https://picsum.photos/id/237/200/300" /> */}
 
             </div>
-            <div style={{ width: '80%', flexGrow: '3' }}>
+            <div style={{ flexGrow: '3' }}>
                 <div className="user-content-alignment">
                     <span className="user-content-main user-username" >{user.username}</span>
                     <span className="user-content-support user-timestamp">8:28am</span>
@@ -40,7 +40,6 @@ function UserCard(user) {
 }
 
 export default function users(props) {
-    console.log(props)
     let tempArray = [];
 
     for (var i = 0; i < 100; i++)
