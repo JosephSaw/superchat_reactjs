@@ -11,6 +11,31 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog as fasCog } from "@fortawesome/free-solid-svg-icons";
+
+function UserHeader() {
+    return (
+        <Row>
+            <Col sm={8}>
+                <div className="user-profile-img">
+                    <div className="user-profile-img-container">
+
+                        <Image src="https://picsum.photos/id/237/200/300" roundedCircle />
+                    </div>
+                </div>
+            </Col>
+
+            <Col sm={4}>
+                <Button>
+                    <FontAwesomeIcon icon={fasCog} />
+                </Button>
+            </Col>
+
+        </Row>
+    );
+}
+
 function UserCard(user) {
     return (
         <Col key={user.id} sm={12} className="user-card">
@@ -47,6 +72,7 @@ export default function users(props) {
 
     return (
         <Container fluid="true" className="app-container">
+            <UserHeader />
 
             <Row>
 

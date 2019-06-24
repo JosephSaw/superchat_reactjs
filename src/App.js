@@ -2,8 +2,13 @@ import React from 'react';
 import './App.css';
 import * as firebase from 'firebase';
 
-import HomePage from './components/home-page';
+import { Provider } from 'react-redux';
+import store from './store';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import HomePage from './components/home-page';
+import LoginPage from './components/login-page';
+import ProtectedRoute from './components/protected-route';
 
 function App() {
   // console.log(process.env)
@@ -29,9 +34,18 @@ function App() {
   //     });
   // });
   return (
-    <div className="App">
-      <HomePage db={db} />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Router>
+          <Switch>
+            <ProtectedRoute path="/app" exact component={HomePage} componentProps={{ db: db }} />
+            {/* <Route path="/app" exact render={() => <HomePage db={db} />} /> */}
+            {/* <ProtectedRoute exact path="/" component={LoginPage} /> */}
+            <Route path="/" exact render={() => <LoginPage db={db} />} />
+          </Switch>
+        </Router>
+      </div>
+    </Provider>
   );
 }
 
