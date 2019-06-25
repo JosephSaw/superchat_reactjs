@@ -1,8 +1,10 @@
 import { FETCH_MESSAGES } from './types';
 
-export const fetchMessages = (db, dispatch) => {
+export const fetchMessages = (db, dispatch, roomId = "") => {
     try {
-        db.collection('Rooms/-Li-diDo8cqwYq1chYUQ/Messages').orderBy('timestamp').onSnapshot((querySnapshot => {
+        if (roomId === "")
+            return;
+        db.collection('Rooms/${roomId}/Messages').orderBy('timestamp').onSnapshot((querySnapshot => {
             let tempMessageArray = [];
             querySnapshot.forEach(doc => {
                 let messageObj = doc.data();

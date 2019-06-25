@@ -14,6 +14,9 @@ import Badge from 'react-bootstrap/Badge';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog as fasCog } from "@fortawesome/free-solid-svg-icons";
 
+import { fetchMessages } from '../actions/messages';
+
+
 function UserHeader() {
     return (
         <Row>
@@ -36,9 +39,35 @@ function UserHeader() {
     );
 }
 
-function UserCard(user) {
+function loadMessages(user, currentUser, dispatch, db) {
+    db.collection('Users').doc(currentUser.id).collection('RoomsController').where('isPrivate', '==', true).where('users', 'array-contains', user.id).get().then(async (querySnapshot) => {
+        var roomId = '';
+        //Check if private chat room exists
+        if (querySnapshot.docs.length == 0) {
+            let roomControllerObj = { users: [currentUser.id, user.id], isPrivate: true, isBlocked: false };
+            // If private chatroom does not exist
+            // Create new private chat room for Current User
+            const docSnapshot = await db.collection('Users').doc(currentUser.id).collection('RoomsController').add(roomControllerObj);
+
+            // Create new private chat room for Other User
+            db.collection('Users').doc(user.id).collection('RoomsController').doc(docSnapshot.id).set(roomControllerObj);
+
+            db.collection('Rooms').doc(docSnapshot.id).set({ users: [currentUser.id, user.id], isPrivate: true });
+
+            roomId = docSnapshot.id;
+        } else {
+            roomId = querySnapshot.docs[0].id
+        }
+
+        fetchMessages(db, dispatch, roomId);
+    })
+
+}
+
+function UserCard(user, currentUser, dispatch, db) {
+
     return (
-        <Col key={user.id} sm={12} className="user-card">
+        <Col key={user.id} sm={12} className="user-card" onClick={(e) => loadMessages(user, currentUser, dispatch, db)}>
             <div className="user-profile-img">
                 <div className="user-profile-img-container">
 
@@ -65,14 +94,9 @@ function UserCard(user) {
 }
 
 export default function users(props) {
-    let tempArray = [];
-
-    for (var i = 0; i < 100; i++)
-        tempArray.push(i);
-
     return (
         <Container fluid="true" className="app-container">
-            <UserHeader />
+            {/* <UserHeader /> */}
 
             <Row>
 
@@ -90,8 +114,8 @@ export default function users(props) {
             </Row>
 
             <Row>
-                {props.users[0] ? UserCard(props.users[0]) : <div></div>}
-                {/* {props.users.map((user) => UserCard(user))} */}
+                {/* {props.users[0] ? UserCard(props.users[0]) : <div></div>} */}
+                {props.users.map((user) => user.id != props.currentUser.id ? UserCard(user, props.currentUser, props.dispatch, props.db) : <div key={props.currentUser.id}></div>)}
             </Row>
             {/* <ul>
                 
