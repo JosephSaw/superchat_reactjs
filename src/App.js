@@ -25,7 +25,7 @@ function App() {
   };
   firebase.initializeApp(firebaseConfig);
   var db = firebase.firestore();
-
+  var auth = firebase.auth();
   // props.db.collection('Rooms').doc('-Lhy7E9p09XGkv8bZDIE').collection('Messages').get().then((querySnapshot) => {
   //     // console.log(querySnapshot.data())
   //     querySnapshot.forEach((doc) => {
@@ -33,6 +33,8 @@ function App() {
   //         console.log({ data: doc.data() })
   //     });
   // });
+
+
   return (
     <Provider store={store}>
       <div className="App">
@@ -41,7 +43,7 @@ function App() {
             <ProtectedRoute path="/app" exact component={HomePage} componentProps={{ db: db }} />
             {/* <Route path="/app" exact render={() => <HomePage db={db} />} /> */}
             {/* <ProtectedRoute exact path="/" component={LoginPage} /> */}
-            <Route path="/" exact render={() => <LoginPage db={db} />} />
+            <Route path="/" exact render={(props) => <LoginPage db={db} auth={auth} {...props}/>} />
           </Switch>
         </Router>
       </div>
