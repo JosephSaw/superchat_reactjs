@@ -35,8 +35,6 @@ const getAvatar = () => {
 function createProfile(props, dispatch) {
     let profileName = document.getElementById('profileForm').value
     props.auth.signInAnonymously().then((firebaseUser) => {
-        console.log(firebaseUser);
-
         props.db.collection('Users').doc(firebaseUser.user.uid).set({ username: profileName, avatar: 2 }).then(() => {
             props.db.collection('Users').doc(firebaseUser.user.uid).get().then(docSnapshot => {
                 let userData = docSnapshot.data()

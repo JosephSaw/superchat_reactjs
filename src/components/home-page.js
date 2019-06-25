@@ -15,7 +15,7 @@ import ChatArea from './chatArea';
 export default function HomePage(props) {
     const users = useSelector(state => state.users);
     const currentUser = useSelector(state => state.currentUser);
-    const messages = useSelector(state => state.messages);
+    const currentRoom = useSelector(state => state.messages);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export default function HomePage(props) {
         <Container fluid="true">
             <Row>
                 <Col sm={4}><Users users={users} currentUser={currentUser} dispatch={dispatch} db={props.db}/></Col>
-                <Col sm={8}><ChatArea messages={messages} currentUserID="A4kagVAwvNW38bHf0GIakhPp3Vb2" /></Col>
+                <Col sm={8}><ChatArea currentRoom={currentRoom} currentUserID={currentUser.id} dispatch={dispatch} db={props.db} firebase={props.firebase} /></Col>
             </Row>
         </Container>
     )

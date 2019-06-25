@@ -39,7 +39,7 @@ function App() {
       <div className="App">
         <Router>
           <Switch>
-            <ProtectedRoute path="/app" exact component={HomePage} componentProps={{ db: db }} />
+            <ProtectedRoute path="/app" exact component={HomePage} componentProps={{ db: db, firebase: firebase }} />
             {/* <Route path="/app" exact render={() => <HomePage db={db} />} /> */}
             {/* <ProtectedRoute exact path="/" component={LoginPage} /> */}
             <Route path="/" exact render={(props) => <LoginPage db={db} auth={auth} {...props}/>} />
