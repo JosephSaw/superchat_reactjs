@@ -32,17 +32,31 @@ const getAvatar = () => {
     return obj;
 }
 
-function createProfile(props, dispatch) {
-    let profileName = document.getElementById('profileForm').value
-    props.auth.signInAnonymously().then((firebaseUser) => {
-        props.db.collection('Users').doc(firebaseUser.user.uid).set({ username: profileName, avatar: 2 }).then(() => {
-            props.db.collection('Users').doc(firebaseUser.user.uid).get().then(docSnapshot => {
-                let userData = docSnapshot.data()
-                dispatch({ type: SUCCESSFUL_LOGIN, payload: { id: firebaseUser.user.uid, username: userData.username, loggedIn: true } });
-                props.history.push('/app');
-            })
+async function createProfile(props, dispatch) {
+    console.log(props);
+    let profileName = document.getElementById('profileForm').value;
+
+    await props.notif.requestPermission().then(() => {
+        console.log("Have permission");
+        return props.notif.getToken();
+    }).then((fcmToken) => {
+        console.log(fcmToken);
+        props.notif.onMessage((payload) => {
+            console.log('onMessage:', payload);
         })
 
+        props.auth.signInAnonymously().then((firebaseUser) => {
+            props.db.collection('Users').doc(firebaseUser.user.uid).set({ username: profileName, avatar: 2, fcmToken, searchKey: profileName.charAt(0).toUpperCase() }).then(() => {
+                props.db.collection('Users').doc(firebaseUser.user.uid).get().then(docSnapshot => {
+                    let userData = docSnapshot.data()
+                    dispatch({ type: SUCCESSFUL_LOGIN, payload: { id: firebaseUser.user.uid, username: userData.username, loggedIn: true, fcmToken: userData.fcmToken } });
+                    props.history.push('/app');
+                })
+            })
+
+        });
+    }).catch((e) => {
+        console.log(`Error occured ${e}`);
     })
 
 }
@@ -76,10 +90,10 @@ export default function LoginPage(props) {
                                             <div>
                                                 <h1>Create Profile</h1>
                                             </div>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                 <Card>
                                                     <Card.Img variant="top" src="https://picsum.photos/200/260" />
-                                                    {/* <FlareComponent className="card-img-top" animationName='idle' width={200} height={260} file={chomper} /> */}
+                                                    { <FlareComponent className="card-img-top" animationName='idle' width={200} height={260} file={chomper} /> }
 
                                                     <Card.Body>
                                                         <Card.Text style={{ textAlign: 'center' }}>
@@ -89,7 +103,7 @@ export default function LoginPage(props) {
                                                 </Card>
                                                 <Card>
                                                     <Card.Img variant="top" src="https://picsum.photos/200/260" />
-                                                    {/* <FlareComponent className="card-img-top" animationName='idle' width={200} height={260} file={teddy} /> */}
+                                                    { <FlareComponent className="card-img-top" animationName='idle' width={200} height={260} file={teddy} /> }
                                                     <Card.Body>
                                                         <Card.Text style={{ textAlign: 'center' }}>
                                                             Teddy
@@ -105,7 +119,7 @@ export default function LoginPage(props) {
                                                     </Card.Body>
                                                 </Card>
                                             </div>
-                                            <p>Choose an avatar. (Avatars can only be seen in the mobile app version)</p>
+                                            <p>Choose an avatar. (Avatars can only be seen in the mobile app version)</p> */}
                                             <Form onSubmit={(e) => {
                                                 e.preventDefault()
                                                 createProfile(props, dispatch);

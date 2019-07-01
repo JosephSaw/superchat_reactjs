@@ -1,6 +1,6 @@
 import { FETCH_MESSAGES, SEND_MESSAGE } from './types';
 
-export const fetchMessages = (db, dispatch, roomId = "") => {
+export const fetchMessages = (db, dispatch, roomId = "", roomName) => {
     try {
         if (roomId === "")
             return;
@@ -11,7 +11,13 @@ export const fetchMessages = (db, dispatch, roomId = "") => {
                 messageObj.id = doc.id;
                 tempMessageArray.push(messageObj);
             });
-            dispatch({ type: FETCH_MESSAGES, payload: { currentRoomId: roomId, messages: [...tempMessageArray] } });
+            dispatch({ type: FETCH_MESSAGES, payload: { currentRoomId: roomId, messages: [...tempMessageArray], roomName: roomName } });
+
+            var el = document.querySelector('#chatroom-area');
+            el.scrollTo({
+                top: el.scrollHeight,
+                behavior: 'smooth'
+            });
         }))
     } catch (error) {
         console.log(error);
@@ -20,11 +26,11 @@ export const fetchMessages = (db, dispatch, roomId = "") => {
 
 export const sendMessage = (firebase, db, dispatch, roomId, message, currentUserId) => {
     db.collection('Rooms').doc(roomId).collection('Messages').add({ from: currentUserId, message: message, type: 'text', timestamp: firebase.firestore.Timestamp.fromDate(new Date()) }).then(docSnapshot => {
-        db.collection('Rooms').doc(roomId).collection('Messages').doc(docSnapshot.id).get().then( doc => {
+        db.collection('Rooms').doc(roomId).collection('Messages').doc(docSnapshot.id).get().then(doc => {
             let messageObj = doc.data();
             messageObj.id = doc.id;
         })
-        
+
     })
 
 }

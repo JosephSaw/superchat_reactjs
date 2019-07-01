@@ -19,13 +19,12 @@ export default function HomePage(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetchUsers(props.db, dispatch);
-        fetchMessages(props.db, dispatch);
+        fetchUsers(props.db, dispatch, currentUser.id);
     }, []);
 
     return (
-        <Container fluid="true">
-            <Row>
+        <Container fluid="true" style={{padding:'0'}}>
+            <Row noGutters>
                 <Col sm={4}><Users users={users} currentUser={currentUser} dispatch={dispatch} db={props.db}/></Col>
                 <Col sm={8}><ChatArea currentRoom={currentRoom} currentUserID={currentUser.id} dispatch={dispatch} db={props.db} firebase={props.firebase} /></Col>
             </Row>

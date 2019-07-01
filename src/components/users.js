@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import '../App.css';
 import '../homepage.css';
@@ -10,9 +10,11 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
+import Nav from 'react-bootstrap/Nav';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog as fasCog } from "@fortawesome/free-solid-svg-icons";
+import { faCog as fasCog, faSearch as fasSearch, faUsers as fasUsers } from "@fortawesome/free-solid-svg-icons";
+import { faComments as farComments } from '@fortawesome/free-regular-svg-icons';
 
 import { fetchMessages } from '../actions/messages';
 
@@ -43,7 +45,7 @@ function loadMessages(user, currentUser, dispatch, db) {
     db.collection('Users').doc(currentUser.id).collection('RoomsController').where('isPrivate', '==', true).where('users', 'array-contains', user.id).get().then(async (querySnapshot) => {
         var roomId = '';
         //Check if private chat room exists
-        if (querySnapshot.docs.length == 0) {
+        if (querySnapshot.docs.length === 0) {
             let roomControllerObj = { users: [currentUser.id, user.id], isPrivate: true, isBlocked: false };
             // If private chatroom does not exist
             // Create new private chat room for Current User
@@ -59,7 +61,7 @@ function loadMessages(user, currentUser, dispatch, db) {
             roomId = querySnapshot.docs[0].id
         }
 
-        fetchMessages(db, dispatch, roomId);
+        fetchMessages(db, dispatch, roomId, user.username);
     })
 
 }
@@ -84,7 +86,7 @@ function UserCard(user, currentUser, dispatch, db) {
                 <div className="user-content-alignment">
                     <span className="user-content-main user-last-message">Have a good weekend</span>
                     <span className="user-content-support">
-                        <Badge variant="primary">12</Badge>
+                        {/* <Badge variant="primary">12</Badge> */}
                     </span>
                     {/* <span className="user-content-support user-last-message">4</span> */}
                 </div>
@@ -93,14 +95,68 @@ function UserCard(user, currentUser, dispatch, db) {
     );
 }
 
-export default function users(props) {
+function switchNav(tabName, setTabName) {
+    setTabName(tabName);
+}
+
+function renderChatroomsColumn() {
+    return (<h1>Chatrooms</h1>);
+}
+
+function renderDiscoverColumn() {
+    return (<h1>Discover</h1>);
+}
+
+function renderFriendsColumn() {
+    return (<h1>Friends</h1>);
+}
+
+export default function Users(props) {
+    const [tabName, setTabName] = useState('chatrooms');
+
+    let column;
+
+    switch (tabName) {
+        case 'chatrooms':
+            column = renderChatroomsColumn();
+            break;
+
+        case 'discover':
+            column = renderDiscoverColumn();
+            break;
+
+        case 'friends':
+            column = renderFriendsColumn();
+            break;
+    }
+
     return (
-        <Container fluid="true" className="app-container">
+        <Container style={{ padding: '0' }} fluid="true" className="app-container">
             {/* <UserHeader /> */}
 
-            <Row>
+            {/* <Row> */}
 
-                <Col sm={8}>
+            <Nav fill justify variant="tabs" defaultActiveKey={tabName} onSelect={(e) => { switchNav(e, setTabName) }}>
+                <Nav.Item>
+                    <Nav.Link eventKey="chatrooms"><FontAwesomeIcon icon={farComments} /></Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link eventKey="discover"><FontAwesomeIcon icon={fasSearch} /></Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link eventKey="friends"><FontAwesomeIcon icon={fasUsers} /></Nav.Link>
+                </Nav.Item>
+            </Nav>
+
+            <Container>
+                <Row>
+                    {column}
+                </Row>
+            </Container>
+
+            {/* <Col sm={8}>
                     <Form>
                         <Form.Group controlId="userSearch">
                             <Form.Control type="text" placeholder="Search" />
@@ -109,14 +165,14 @@ export default function users(props) {
                 </Col>
                 <Col sm={4}>
                     <Button variant="primary">Primary</Button>
-                </Col>
+                </Col> */}
 
-            </Row>
+            {/* </Row> */}
 
-            <Row>
-                {/* {props.users[0] ? UserCard(props.users[0]) : <div></div>} */}
-                {props.users.map((user) => user.id != props.currentUser.id ? UserCard(user, props.currentUser, props.dispatch, props.db) : <div key={props.currentUser.id}></div>)}
-            </Row>
+            {/* <Row> */}
+            {/* {props.users[0] ? UserCard(props.users[0]) : <div></div>} */}
+            {/* {props.users.map((user) => user.id != props.currentUser.id ? UserCard(user, props.currentUser, props.dispatch, props.db) : <div key={props.currentUser.id}></div>)} */}
+            {/* </Row> */}
             {/* <ul>
                 
             </ul> */}
