@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchUsers } from '../actions/users';
 import { fetchMessages } from '../actions/messages';
+import { subscribeToFriendRequests } from '../actions/friend-requests';
+import { subscribeToFriendsList } from '../actions/friendslist';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,15 +20,20 @@ export default function HomePage(props) {
     const currentRoom = useSelector(state => state.messages);
     const dispatch = useDispatch();
 
+    console.log()
+
     useEffect(() => {
         fetchUsers(props.db, dispatch, currentUser.id);
-    }, []);
+        subscribeToFriendRequests(props.db, dispatch, currentUser.id);
+        subscribeToFriendsList(props.db, dispatch, currentUser.id);
 
+    }, []);
+    console.log(props);
     return (
-        <Container fluid="true" style={{padding:'0'}}>
+        <Container fluid="true" style={{ padding: '0' }}>
             <Row noGutters>
-                <Col sm={4}><Users users={users} currentUser={currentUser} dispatch={dispatch} db={props.db}/></Col>
-                <Col sm={8}><ChatArea currentRoom={currentRoom} currentUserID={currentUser.id} dispatch={dispatch} db={props.db} firebase={props.firebase} /></Col>
+                <Col sm={4}><Users users={users} currentUser={currentUser} dispatch={dispatch} db={props.db} functions={props.functions} /></Col>
+                <Col sm={8}><ChatArea currentRoom={currentRoom} currentUserID={currentUser.id} dispatch={dispatch} db={props.db} firebase={props.firebase} functions={props.functions} /></Col>
             </Row>
         </Container>
     )

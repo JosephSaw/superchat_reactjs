@@ -5,10 +5,9 @@ export const fetchUsers = (db, dispatch, currentUserId) => {
         db.collection('Users').get().then((querySnapshot) => {
             let tempUserArray = [];
             querySnapshot.forEach((doc) => {
-                console.log(doc)
-                db.collection('Users').doc(doc.id).collection('RoomsController').get().then( roomsControllerSnapshot => {
-                    console.log({roomsControllerSnapshot})
-                })
+                // db.collection('Users').doc(doc.id).collection('RoomsController').get().then(roomsControllerSnapshot => {
+                //     // console.log({ roomsControllerSnapshot })
+                // })
                 let userObj = doc.data();
                 userObj.id = doc.id
                 tempUserArray.push(userObj);

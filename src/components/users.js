@@ -17,7 +17,9 @@ import { faCog as fasCog, faSearch as fasSearch, faUsers as fasUsers } from "@fo
 import { faComments as farComments } from '@fortawesome/free-regular-svg-icons';
 
 import { fetchMessages } from '../actions/messages';
-
+import DiscoverColumn from './discover-column';
+import FriendsColumn from './friends-column';
+import ChatroomsColumn from './chatrooms-column';
 
 function UserHeader() {
     return (
@@ -99,18 +101,6 @@ function switchNav(tabName, setTabName) {
     setTabName(tabName);
 }
 
-function renderChatroomsColumn() {
-    return (<h1>Chatrooms</h1>);
-}
-
-function renderDiscoverColumn() {
-    return (<h1>Discover</h1>);
-}
-
-function renderFriendsColumn() {
-    return (<h1>Friends</h1>);
-}
-
 export default function Users(props) {
     const [tabName, setTabName] = useState('chatrooms');
 
@@ -118,15 +108,15 @@ export default function Users(props) {
 
     switch (tabName) {
         case 'chatrooms':
-            column = renderChatroomsColumn();
+            column = <ChatroomsColumn />;
             break;
 
         case 'discover':
-            column = renderDiscoverColumn();
+            column = <DiscoverColumn db={props.db} functions={props.functions} currentUser={props.currentUser} />
             break;
 
         case 'friends':
-            column = renderFriendsColumn();
+            column = <FriendsColumn db={props.db} functions={props.functions} currentUser={props.currentUser} />
             break;
     }
 

@@ -27,8 +27,8 @@ function App() {
   const db = firebase.firestore();
   const auth = firebase.auth();
   const notifs = firebase.messaging();
+  const functions = firebase.functions();
 
-  
   // props.db.collection('Rooms').doc('-Lhy7E9p09XGkv8bZDIE').collection('Messages').get().then((querySnapshot) => {
   //     // console.log(querySnapshot.data())
   //     querySnapshot.forEach((doc) => {
@@ -42,11 +42,11 @@ function App() {
       <div className="App">
         <Router>
           <Switch>
-            {/* <ProtectedRoute path="/app" exact component={HomePage} componentProps={{ db: db, firebase: firebase }} /> */} {/* UNCOMMENT */}
+            <ProtectedRoute path="/app" exact component={HomePage} componentProps={{ db: db, firebase: firebase, functions, auth, notif: notifs }} /> {/* UNCOMMENT */}
             {/* <Route path="/app" exact render={() => <HomePage db={db} />} /> */}
             {/* <ProtectedRoute exact path="/" component={LoginPage} /> */}
-            {/* <Route path="/" exact render={(props) => <LoginPage db={db} auth={auth} notif={notifs} {...props} />} /> */} {/* UNCOMMENT */}
-            <Route path="/" exact component={HomePage} componentProps={{ db: db, firebase: firebase }}  />
+            <Route path="/" exact render={(props) => <LoginPage db={db} auth={auth} notif={notifs} {...props} />} /> {/* UNCOMMENT */}
+            {/* <Route path="/" exact render={(props) => <HomePage db={db} functions={functions} firebase={firebase} auth={auth} notif={notifs} {...props} />} /> */}
           </Switch>
         </Router>
       </div>
