@@ -108,11 +108,11 @@ export default function Users(props) {
 
     switch (tabName) {
         case 'chatrooms':
-            column = <ChatroomsColumn />;
+            column = <ChatroomsColumn db={props.db} currentUser={props.currentUser} />;
             break;
 
         case 'discover':
-            column = <DiscoverColumn db={props.db} functions={props.functions} currentUser={props.currentUser} />
+            column = <DiscoverColumn db={props.db} dispatch={props.dispatch} functions={props.functions} currentUser={props.currentUser} />
             break;
 
         case 'friends':
@@ -121,7 +121,7 @@ export default function Users(props) {
     }
 
     return (
-        <Container style={{ padding: '0' }} fluid="true" className="app-container">
+        <Container style={{ padding: '0', backgroundColor: '#fff'}} fluid className="app-container">
             {/* <UserHeader /> */}
 
             {/* <Row> */}

@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
 import '../loginpage.css';
 
@@ -32,15 +31,13 @@ const getAvatar = () => {
     return obj;
 }
 
-async function createProfile(props, dispatch) {
-    console.log(props);
+async function createProfile(props, dispatch, setDisabled) {
+    setDisabled(true);
     let profileName = document.getElementById('profileForm').value;
 
     await props.notif.requestPermission().then(() => {
-        console.log("Have permission");
         return props.notif.getToken();
     }).then((fcmToken) => {
-        console.log(fcmToken);
         props.notif.onMessage((payload) => {
             console.log('onMessage:', payload);
         })
@@ -63,7 +60,8 @@ async function createProfile(props, dispatch) {
 
 
 export default function LoginPage(props) {
-    const state = useSelector(state => state)
+    const [disabled, setDisabled] = useState(false);
+    const state = useSelector(state => state);
     const dispatch = useDispatch();
     const animatedWelcome = useSpring({ opacity: 0, from: { opacity: 1 }, delay: 5000, duration: 1000 });
     const staticBackground = useSpring({ opacity: 1, from: { opacity: 0 }, delay: 5000, duration: 200 });
@@ -122,13 +120,13 @@ export default function LoginPage(props) {
                                             <p>Choose an avatar. (Avatars can only be seen in the mobile app version)</p> */}
                                             <Form onSubmit={(e) => {
                                                 e.preventDefault()
-                                                createProfile(props, dispatch);
+                                                createProfile(props, dispatch, setDisabled);
                                             }}>
                                                 <Form.Group>
-                                                    <Form.Control id="profileForm" type="text" placeholder="Enter Username" />
+                                                    <Form.Control disabled={disabled} id="profileForm" type="text" placeholder="Enter Username" />
                                                 </Form.Group>
                                                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                                    <Button variant="primary" type="submit" >
+                                                    <Button disabled={disabled} variant="primary" type="submit" >
                                                         Continue
                                                     </Button>
                                                 </div>

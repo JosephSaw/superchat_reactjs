@@ -9,3 +9,8 @@ export const UPDATE_PENDING_FRIEND_REQUESTS = 'friendRequests:update_pending';
 export const UPDATE_RECEIVED_FRIEND_REQUESTS = 'friendRequests:update_received';
 
 export const UPDATE_FRIENDS_LIST = 'friends:update_list';
+
+export const UPDATE_CHATROOMS = 'chatrooms:update';
+
+export const SHOW_TOAST = 'toast:show';
+export const HIDE_TOAST = 'toast:hide';

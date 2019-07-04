@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useDispatch } from 'react';
 import { useSelector } from 'react-redux';
+import { SHOW_TOAST, HIDE_TOAST } from '../actions/types';
 
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
@@ -39,20 +40,33 @@ const queryFirestore = async (query, queryResults, setQueryResults, filteredUser
 
 }
 
-const acceptFriendRequest = (e, newUser, currentUser, functions) => {
+const acceptFriendRequest = (e, newUser, currentUser, functions, setDisabled, dispatch) => {
     let acceptFriendRequest = functions.httpsCallable('acceptFriendRequest');
+    setDisabled(true);
 
-    acceptFriendRequest({ newFriendId: newUser.newFriendId, newFriendUsername: newUser.newFriendUsername, currentUsername: currentUser.username });
+    acceptFriendRequest({ newFriendId: newUser.newFriendId, newFriendUsername: newUser.newFriendUsername, currentUsername: currentUser.username }).then((response) => {
+        dispatch({ type: SHOW_TOAST, payload: { header: 'Friend Request', body: 'Friend request accepted successfully.' } });
+    }).catch((err) => {
+        dispatch({ type: SHOW_TOAST, payload: { header: 'Friend Request', body: 'Something has went wrong while accepting the friend request, please try again.' } });
+    }).finally(() => {
+        setDisabled(false);
+    });
 }
 
-const sendFriendRequest = (e, newUser, currentUser, functions, ) => {
+const sendFriendRequest = (e, newUser, currentUser, functions, setDisabled, dispatch) => {
     let sendFriendRequest = functions.httpsCallable('sendFriendRequest');
+    setDisabled(true);
 
-
-    sendFriendRequest({ newFriendId: newUser.id, newFriendUsername: newUser.username, currentUsername: currentUser.username })
+    sendFriendRequest({ newFriendId: newUser.id, newFriendUsername: newUser.username, currentUsername: currentUser.username }).then((response) => {
+        dispatch({ type: SHOW_TOAST, payload: { header: 'Friend Request', body: 'Friend request sent successfully.' } });
+    }).catch((err) => {
+        dispatch({ type: SHOW_TOAST, payload: { header: 'Friend Request', body: 'Something has went wrong while sending friend request, a reason could either be that you have already sent a friend request or this person is already on your friends list.' } });
+    }).finally(() => {
+        setDisabled(false);
+    });
 }
 
-const renderFilteredUsers = (filteredUsers, functions, currentUser) => {
+const renderFilteredUsers = (filteredUsers, functions, currentUser, disabled, setDisabled, dispatch) => {
     return (
         <div>
             <h5>Search Results</h5>
@@ -62,7 +76,7 @@ const renderFilteredUsers = (filteredUsers, functions, currentUser) => {
                         <Card.Title>{data.username}</Card.Title>
                         <Card.Subtitle style={{ textAlign: 'end' }}>
                             <OverlayTrigger placement='top' overlay={<Tooltip>Add as friend</Tooltip>}>
-                                <Button style={{ marginRight: '15px' }} onClick={(e) => sendFriendRequest(e, data, currentUser, functions)} variant="outline-secondary"><FontAwesomeIcon icon={fasUserPlus} /></Button>
+                                <Button disabled={disabled} style={{ marginRight: '15px' }} onClick={(e) => sendFriendRequest(e, data, currentUser, functions, setDisabled, dispatch)} variant="outline-secondary"><FontAwesomeIcon icon={fasUserPlus} /></Button>
                             </OverlayTrigger>
                         </Card.Subtitle>
                     </Card.Body>
@@ -89,7 +103,7 @@ const renderPendingFriendRequests = (friendsList) => {
     );
 }
 
-const renderReceivedFriendRequests = (friendsList, functions, currentUser) => {
+const renderReceivedFriendRequests = (friendsList, functions, currentUser, disabled, setDisabled, dispatch) => {
 
     return (
         <div>
@@ -104,7 +118,7 @@ const renderReceivedFriendRequests = (friendsList, functions, currentUser) => {
                             </OverlayTrigger>
 
                             <OverlayTrigger placement='top' overlay={<Tooltip>Accept friend request</Tooltip>}>
-                                <Button><FontAwesomeIcon icon={fasCheck} onClick={(e) => acceptFriendRequest(e, data, currentUser, functions)} /></Button>
+                                <Button><FontAwesomeIcon icon={fasCheck} onClick={(e) => acceptFriendRequest(e, data, currentUser, functions, setDisabled, dispatch)} /></Button>
                             </OverlayTrigger>
 
                         </Card.Subtitle>
@@ -125,8 +139,7 @@ export default function DiscoverColumn(props) {
     const [lastQuery, setLastQuery] = useState('');
     const [queryResults, setQueryResults] = useState([]);
     const [filteredUsers, setfilteredUsers] = useState([]);
-
-    console.log(props);
+    const [disabled, setDisabled] = useState(false);
 
     if (query === '' && queryResults.length > 0) {
         setQueryResults([]);
@@ -146,9 +159,9 @@ export default function DiscoverColumn(props) {
                 </InputGroup>
             </Form>
 
-            {query !== '' ? renderFilteredUsers(filteredUsers, props.functions, props.currentUser) : <h5>Enter a query to search for friends</h5>}
+            {query !== '' ? renderFilteredUsers(filteredUsers, props.functions, props.currentUser, disabled, setDisabled, props.dispatch) : <h5>Enter a query to search for friends</h5>}
 
-            {receivedFriendRequests.length > 0 ? renderReceivedFriendRequests(receivedFriendRequests, props.functions, props.currentUser) : null}
+            {receivedFriendRequests.length > 0 ? renderReceivedFriendRequests(receivedFriendRequests, props.functions, props.currentUser, disabled, setDisabled, props.dispatch) : null}
             {pendingFriendRequests.length > 0 ? renderPendingFriendRequests(pendingFriendRequests) : null}
 
         </Col>

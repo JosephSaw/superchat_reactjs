@@ -55,9 +55,9 @@
 /* Chat Area */
 
 .chat-header {
-    -webkit-box-shadow: 0px 9px 24px -14px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 9px 24px -14px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 9px 24px -14px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     height: 6.5%;
     width: 100%;
     position: absolute;
@@ -65,19 +65,74 @@
 }
 
 #chatroom-area {
-    height: 88.5%; 
+    height: 88.5%;
     position: absolute;
     top: 6.5%;
     width: 100%;
     overflow-y: scroll;
 }
 
+.chat-box {
+    position: relative;
+    margin: 5px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.chat-current-user .chat-box {
+    border-top-right-radius: 0;
+}
+.chat-other-user .chat-box {
+    border-top-left-radius: 0;
+}
+.chat-current-user .chat-box::after {
+    position: absolute;
+    content: "";
+    background: transparent;
+    right: -10px;
+    top: 0;
+    height: 0;
+    width: 0;
+    border: 5px solid transparent;
+    border-left-color: #dcf8c6;
+
+}
+
+.chat-other-user .chat-box::after {
+    position: absolute;
+    content: "";
+    background: transparent;
+    left: -10px;
+    top: 0;
+    height: 0;
+    width: 0;
+    border: 5px solid transparent;
+    border-right-color: #fff;
+
+}
+
+.chat-box p {
+    margin: 0;
+}
+
 .chat-other-user {
     display: flex;
     justify-content: flex-start;
+    padding: 0px 30px 0 50px;
+}
+
+.chat-other-user-box {
+    background-color: #fff;
 }
 
 .chat-current-user {
     display: flex;
     justify-content: flex-end;
+    padding: 0px 50px 0 30px;
+}
+
+.chat-current-user-box {
+    background-color: #dcf8c6;
 }
