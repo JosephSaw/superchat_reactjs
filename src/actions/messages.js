@@ -1,6 +1,6 @@
 import { FETCH_MESSAGES, SEND_MESSAGE } from './types';
 
-export const fetchMessages = (db, dispatch, roomId = "", currentUserId) => {
+export const fetchMessages = (db, dispatch, roomId = "") => {
     try {
         if (roomId === "")
             return;
@@ -14,7 +14,7 @@ export const fetchMessages = (db, dispatch, roomId = "", currentUserId) => {
             });
             let payload = {};
             payload[roomId] = tempMessageArray;
-            
+
             dispatch({ type: FETCH_MESSAGES, payload });
 
             var el = document.querySelector('#chatroom-area');

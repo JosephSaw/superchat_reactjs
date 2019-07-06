@@ -14,6 +14,12 @@ export const subscribeToChatrooms = (db, dispatch, currentUserId) => {
     })
 }
 
-export const changeRoom = (dispatch, roomId, roomName) => {
+export const changeRoom = (dispatch, roomId, roomName, currentUserId = '', db = {}) => {
+    if (roomName === '') {
+        db.collection('Users').doc(currentUserId).collection('RoomsController').doc(roomId).get().then(docSnapshot => {
+            let data = docSnapshot.data();
+            dispatch({ type: CHANGE_CURRENT_ROOM, payload: { roomId, roomName: data.roomName } });
+        })
+    }
     dispatch({ type: CHANGE_CURRENT_ROOM, payload: { roomId, roomName } });
 }

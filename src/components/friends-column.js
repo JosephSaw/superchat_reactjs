@@ -5,13 +5,12 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
 import { fetchMessages } from '../actions/messages';
+import { changeRoom } from '../actions/chatrooms';
+
 
 
 const startChat = (e, functions, currentUser, friend, db, dispatch) => {
     let startChat = functions.httpsCallable('startChat');
-
-    console.log(currentUser)
-    console.log(friend);
 
     startChat({ friendUserId: friend.id, friendUsername: friend.username, currentUsername: currentUser.username, currentUserFcmToken: currentUser.fcmToken }).then((response) => {
         console.log(response);
@@ -19,7 +18,7 @@ const startChat = (e, functions, currentUser, friend, db, dispatch) => {
         if (!response.data.success)
             return;
 
-        fetchMessages(db, dispatch, response.data.payload.roomId, currentUser.id)
+        changeRoom(dispatch, response.data.payload.roomId, '', currentUser.id, db);
     });
 }
 
@@ -28,7 +27,7 @@ const renderFriendsList = (friends, functions, currentUser, db, dispatch) => {
         <div>
             <h5>Click on a user to start a chat</h5>
             {friends.map(friend =>
-                <Card key={friend.id} onClick={(e) => startChat(e, functions, currentUser, friend, db, dispatch)}>
+                <Card key={friend.id} onClick={(e) => startChat(e, functions, currentUser, friend, db, dispatch)} className="chatroom-card">
                     <Card.Body>
                         <Card.Title>{friend.username}</Card.Title>
                     </Card.Body>

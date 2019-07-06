@@ -7,17 +7,11 @@ import { changeRoom } from '../actions/chatrooms';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
-const startchat = (db, currentUserId, dispatch, roomId) => {
-    fetchMessages(db, dispatch, roomId, currentUserId);
-}
-
 const renderChatrooms = (chatrooms, db, currentUser, dispatch) => {
     return (<div>
         <h5>Chatrooms</h5>
         {chatrooms.map(chatroom =>
-            <Card key={chatroom.roomId} onClick={(e) => changeRoom(dispatch, chatroom.roomId, chatroom.roomName)
-                // startchat(db, currentUser.id, dispatch, chatroom.roomId)
-            }>
+            <Card key={chatroom.roomId} onClick={(e) => changeRoom(dispatch, chatroom.roomId, chatroom.roomName)} className="chatroom-card">
                 <Card.Body>
                     <Card.Title>{chatroom.roomName}</Card.Title>
                     <Card.Subtitle>{chatroom.previousMessage}</Card.Subtitle>
