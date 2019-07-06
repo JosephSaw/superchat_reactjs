@@ -34,7 +34,6 @@ export default function HomePage(props) {
 
     const handleToastClose = () => dispatch({ type: HIDE_TOAST, payload: { show: false } });
 
-
     return (
         <Container fluid="true" style={{ padding: '0', position: 'relative' }}>
             <div style={{ position: 'absolute', zIndex: '999', top: '25px', right: '50px' }}>

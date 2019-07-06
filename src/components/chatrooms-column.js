@@ -27,7 +27,6 @@ const renderChatrooms = (chatrooms, db, currentUser, dispatch) => {
 const ChatroomsColumn = (props) => {
     const chatrooms = useSelector(state => state.chatrooms);
     const dispatch = useDispatch();
-    console.log(props);
 
     return (
         <Col sm={12}>

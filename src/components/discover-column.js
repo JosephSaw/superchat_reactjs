@@ -150,7 +150,10 @@ export default function DiscoverColumn(props) {
     }
     return (
         <Col sm={12}>
-            <Form>
+            <Form onSubmit={(e) => {
+                e.preventDefault();
+                setQuery(query);
+            }}>
                 <InputGroup className="mb-3">
                     <Form.Control type="text" onChange={(e) => setQuery(e.target.value)} placeholder="Enter a name to search for users" />
                     <InputGroup.Append>
