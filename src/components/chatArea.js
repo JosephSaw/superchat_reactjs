@@ -10,8 +10,8 @@ import Col from 'react-bootstrap/Col';
 
 function otherUserTextBox(message) {
     return (
-        <div className="chat-other-user">
-            <div key={message.id} className="chat-box chat-other-user-box">
+        <div key={message.id}  className="chat-other-user">
+            <div className="chat-box chat-other-user-box">
                 <p>{message.message}</p>
             </div>
         </div>
@@ -20,8 +20,8 @@ function otherUserTextBox(message) {
 
 function currentUserTextBox(message) {
     return (
-        <div className="chat-current-user">
-            <div key={message.id} className="chat-box chat-current-user-box">
+        <div key={message.id} className="chat-current-user">
+            <div className="chat-box chat-current-user-box">
                 <p>{message.message}</p>
             </div>
         </div>

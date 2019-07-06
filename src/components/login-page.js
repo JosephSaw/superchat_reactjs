@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner as fasSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import '../loginpage.css';
 
@@ -127,7 +129,7 @@ export default function LoginPage(props) {
                                                 </Form.Group>
                                                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                                     <Button disabled={disabled} variant="primary" type="submit" >
-                                                        Continue
+                                                        Continue {disabled ? <FontAwesomeIcon icon={fasSpinner} spin /> : ''}
                                                     </Button>
                                                 </div>
                                             </Form>

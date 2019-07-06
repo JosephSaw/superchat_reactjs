@@ -12,7 +12,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Toast from 'react-bootstrap/Toast';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck as fasCheck, faTimes as fasTimes, faUserPlus as fasUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck as fasCheck, faTimes as fasTimes, faUserPlus as fasUserPlus, faSpinner as fasSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const filterUsers = (query, queryResults, setfilteredUsers) => {
     setfilteredUsers(queryResults.filter(userData => userData.username.toLowerCase().includes(query.toLowerCase())));
@@ -114,11 +114,11 @@ const renderReceivedFriendRequests = (friendsList, functions, currentUser, disab
                         <Card.Title>{data.newFriendUsername}</Card.Title>
                         <Card.Subtitle style={{ textAlign: 'end' }}>
                             <OverlayTrigger placement='top' overlay={<Tooltip>Reject friend request</Tooltip>}>
-                                <Button style={{ marginRight: '15px' }} variant="outline-secondary"><FontAwesomeIcon icon={fasTimes} /></Button>
+                                <Button disabled={disabled} style={{ marginRight: '15px' }} variant="outline-secondary"><FontAwesomeIcon icon={fasTimes} /></Button>
                             </OverlayTrigger>
 
                             <OverlayTrigger placement='top' overlay={<Tooltip>Accept friend request</Tooltip>}>
-                                <Button><FontAwesomeIcon icon={fasCheck} onClick={(e) => acceptFriendRequest(e, data, currentUser, functions, setDisabled, dispatch)} /></Button>
+                                <Button disabled={disabled}>{disabled ? <FontAwesomeIcon icon={fasSpinner} spin /> : <FontAwesomeIcon icon={fasCheck} onClick={(e) => acceptFriendRequest(e, data, currentUser, functions, setDisabled, dispatch)} />}</Button>
                             </OverlayTrigger>
 
                         </Card.Subtitle>
