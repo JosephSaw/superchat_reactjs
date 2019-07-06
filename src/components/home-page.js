@@ -37,8 +37,6 @@ export default function HomePage(props) {
 
     let currentMessages = [];
 
-    console.log(messages);
-
     if (messages[chatrooms.currentRoomId] === undefined)
         fetchMessages(props.db, dispatch, chatrooms.currentRoomId, currentUser.id);
     else

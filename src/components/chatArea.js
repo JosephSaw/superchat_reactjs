@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../App.css';
 import '../homepage.css';
 
@@ -41,6 +41,14 @@ const sendMsg = (e, props, setDisabled) => {
 
 export default function ChatArea(props) {
     const [disabled, setDisabled] = useState(false);
+
+    useEffect(() => {
+        var el = document.querySelector('#chatroom-area');
+        el.scrollTo({
+            top: el.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
 
     return (
         <div className="app-container" style={{ position: 'relative', overflowY: 'hidden' }}>

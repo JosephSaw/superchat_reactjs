@@ -16,12 +16,6 @@ export const fetchMessages = (db, dispatch, roomId = "") => {
             payload[roomId] = tempMessageArray;
 
             dispatch({ type: FETCH_MESSAGES, payload });
-
-            var el = document.querySelector('#chatroom-area');
-            el.scrollTo({
-                top: el.scrollHeight,
-                behavior: 'smooth'
-            });
         }))
 
     } catch (error) {
