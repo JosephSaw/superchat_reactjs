@@ -21,8 +21,9 @@ import { HIDE_TOAST } from '../actions/types';
 export default function HomePage(props) {
     const toast = useSelector(state => state.toast);
     const users = useSelector(state => state.users);
+    const chatrooms = useSelector(state => state.chatrooms);
     const currentUser = useSelector(state => state.currentUser);
-    const currentRoom = useSelector(state => state.messages);
+    const messages = useSelector(state => state.messages);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -33,6 +34,15 @@ export default function HomePage(props) {
     }, []);
 
     const handleToastClose = () => dispatch({ type: HIDE_TOAST, payload: { show: false } });
+
+    let currentMessages = [];
+
+    console.log(messages);
+
+    if (messages[chatrooms.currentRoomId] === undefined)
+        fetchMessages(props.db, dispatch, chatrooms.currentRoomId, currentUser.id);
+    else
+        currentMessages = messages[chatrooms.currentRoomId]
 
     return (
         <Container fluid="true" style={{ padding: '0', position: 'relative' }}>
@@ -48,7 +58,7 @@ export default function HomePage(props) {
 
             <Row noGutters>
                 <Col sm={4}><Users users={users} currentUser={currentUser} dispatch={dispatch} db={props.db} functions={props.functions} /></Col>
-                <Col sm={8}><ChatArea currentRoom={currentRoom} currentUserID={currentUser.id} dispatch={dispatch} db={props.db} firebase={props.firebase} functions={props.functions} /></Col>
+                <Col sm={8}><ChatArea messages={currentMessages} roomId={chatrooms.currentRoomId} roomName={chatrooms.currentRoomName} currentUserID={currentUser.id} dispatch={dispatch} db={props.db} firebase={props.firebase} functions={props.functions} /></Col>
             </Row>
         </Container>
     )

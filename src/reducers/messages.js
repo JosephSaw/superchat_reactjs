@@ -1,9 +1,9 @@
-import { FETCH_MESSAGES, SEND_MESSAGE } from '../actions/types'
+import { FETCH_MESSAGES, SEND_MESSAGE, CHANGE_CURRENT_ROOM } from '../actions/types'
 
-function messagesReducer(state = {currentRoomId:'', messages: [], roomName: ''}, action) {
+function messagesReducer(state = {}, action) {
     switch (action.type) {
         case FETCH_MESSAGES:
-            return {...state, currentRoomId: action.payload.currentRoomId, messages: action.payload.messages, roomName: action.payload.roomName};
+            return { ...state, ...action.payload };
 
         // case SEND_MESSAGE:
         //     console.log({state, action})

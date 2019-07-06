@@ -5,24 +5,24 @@ export const fetchMessages = (db, dispatch, roomId = "", currentUserId) => {
         if (roomId === "")
             return;
 
-        db.collection('Users').doc(currentUserId).collection('RoomsController').doc(roomId).get().then(docSnapshot => {
-            let roomController = docSnapshot.data()
-            db.collection('Rooms/' + roomId + '/Messages').orderBy('timestamp').onSnapshot((querySnapshot => {
-                let tempMessageArray = [];
-                querySnapshot.forEach(doc => {
-                    let messageObj = doc.data();
-                    messageObj.id = doc.id;
-                    tempMessageArray.push(messageObj);
-                });
-                dispatch({ type: FETCH_MESSAGES, payload: { currentRoomId: roomId, messages: [...tempMessageArray], roomName: roomController.roomName } });
+        db.collection('Rooms/' + roomId + '/Messages').orderBy('timestamp').onSnapshot((querySnapshot => {
+            let tempMessageArray = [];
+            querySnapshot.forEach(doc => {
+                let messageObj = doc.data();
+                messageObj.id = doc.id;
+                tempMessageArray.push(messageObj);
+            });
+            let payload = {};
+            payload[roomId] = tempMessageArray;
+            
+            dispatch({ type: FETCH_MESSAGES, payload });
 
-                var el = document.querySelector('#chatroom-area');
-                el.scrollTo({
-                    top: el.scrollHeight,
-                    behavior: 'smooth'
-                });
-            }))
-        })
+            var el = document.querySelector('#chatroom-area');
+            el.scrollTo({
+                top: el.scrollHeight,
+                behavior: 'smooth'
+            });
+        }))
 
     } catch (error) {
         console.log(error);

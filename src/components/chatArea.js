@@ -7,10 +7,9 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-
 function otherUserTextBox(message) {
     return (
-        <div key={message.id}  className="chat-other-user">
+        <div key={message.id} className="chat-other-user">
             <div className="chat-box chat-other-user-box">
                 <p>{message.message}</p>
             </div>
@@ -34,7 +33,7 @@ const sendMsg = (e, props, setDisabled) => {
     let sendMessage = props.functions.httpsCallable('sendMessage');
 
     let newMessage = document.getElementById('messageField').value
-    sendMessage({ message: newMessage, type: "text", roomId: props.currentRoom.currentRoomId }).then(response => {
+    sendMessage({ message: newMessage, type: "text", roomId: props.roomId }).then(response => {
         document.getElementById('messageField').value = "";
         setDisabled(false);
     })
@@ -49,13 +48,13 @@ export default function ChatArea(props) {
                 <Row>
                     <Col sm={12}>
                         <div>
-                            <h3 style={{ marginLeft: '20px' }}>{props.currentRoom.roomName !== '' ? props.currentRoom.roomName : 'Click on a user to start a chat with them.'}</h3>
+                            <h3 style={{ marginLeft: '20px' }}>{props.roomName !== '' ? props.roomName : 'Click on a user to start a chat with them.'}</h3>
                         </div>
                     </Col>
                 </Row>
             </div>
             <div id="chatroom-area">
-                {props.currentRoom.messages.map(message => props.currentUserID === message.from ? currentUserTextBox(message) : otherUserTextBox(message))}
+                {props.messages.map(message => props.currentUserID === message.from ? currentUserTextBox(message) : otherUserTextBox(message))}
             </div>
             <div style={{ position: 'absolute', bottom: '0', right: '0', left: '0', height: "5%" }}>
                 <Form onSubmit={(e) => sendMsg(e, props, setDisabled)} style={{ display: 'flex', justifyContent: 'space-between' }}>
