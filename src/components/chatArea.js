@@ -7,6 +7,11 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { sendMessage } from '../actions/messages';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock as farClock } from '@fortawesome/free-regular-svg-icons';
+
 function otherUserTextBox(message) {
     return (
         <div key={message.id} className="chat-other-user">
@@ -21,26 +26,25 @@ function currentUserTextBox(message) {
     return (
         <div key={message.id} className="chat-current-user">
             <div className="chat-box chat-current-user-box">
-                <p>{message.message}</p>
+                <div style={{ display: 'flex', alignItems: ' flex-end' }}>
+                    <p>{message.message}</p>  {message.sending ? <FontAwesomeIcon style={{ marginLeft: '10px' }} size="xs" icon={farClock} /> : null}
+                </div>
             </div>
         </div>
     );
 }
 
-const sendMsg = (e, props, setDisabled) => {
+const sendMsg = (e, props) => {
     e.preventDefault();
-    setDisabled(true);
-    let sendMessage = props.functions.httpsCallable('sendMessage');
+    let httpSendMessage = props.functions.httpsCallable('sendMessage');
+    let formField = document.getElementById('messageField')
 
-    let newMessage = document.getElementById('messageField').value
-    sendMessage({ message: newMessage, type: "text", roomId: props.roomId }).then(response => {
-        document.getElementById('messageField').value = "";
-        setDisabled(false);
-    })
+    let newMessage = formField.value;
+    sendMessage(newMessage, props.roomId, props.dispatch, props.messages, props.currentUserID, httpSendMessage);
+    formField.value = "";
 }
 
 export default function ChatArea(props) {
-    const [disabled, setDisabled] = useState(false);
 
     useEffect(() => {
         var el = document.querySelector('#chatroom-area');
@@ -65,11 +69,11 @@ export default function ChatArea(props) {
                 {props.messages.map(message => props.currentUserID === message.from ? currentUserTextBox(message) : otherUserTextBox(message))}
             </div>
             <div style={{ position: 'absolute', bottom: '0', right: '0', left: '0', height: "5%" }}>
-                <Form onSubmit={(e) => sendMsg(e, props, setDisabled)} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Form onSubmit={(e) => sendMsg(e, props)} style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Form.Group style={{ flexGrow: '4' }}>
-                        <Form.Control disabled={disabled} required id="messageField" type="text" placeholder="Send message..." />
+                        <Form.Control required id="messageField" type="text" placeholder="Send message..." />
                     </Form.Group>
-                    <Button disabled={disabled} variant="primary" type="submit" style={{ flexGrow: '1', height: '100%' }}>
+                    <Button variant="primary" type="submit" style={{ flexGrow: '1', height: '100%' }}>
                         Send
                     </Button>
                 </Form>

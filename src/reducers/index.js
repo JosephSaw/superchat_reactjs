@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import currentUserReducer from './currentUser';
 import usersReducer from './users';
+import messagesSnapshotReducer from './messagesSnapshot';
 import messagesReducer from './messages';
 import pendingFriendRequestsReducer from './pendingFriendRequests';
 import receivedFriendRequestsReducer from './receivedFriendRequests';
@@ -12,10 +13,11 @@ import toastReducer from './toast';
 export default combineReducers({
     currentUser: currentUserReducer,
     users: usersReducer,
-    messages: messagesReducer,
+    messagesSnapshot: messagesSnapshotReducer,
     pendingFriendRequests: pendingFriendRequestsReducer,
     receivedFriendRequests: receivedFriendRequestsReducer,
     friendsList: friendsListReducer,
     chatrooms: chatroomsReducer,
-    toast: toastReducer
+    toast: toastReducer,
+    messages: messagesReducer
 });

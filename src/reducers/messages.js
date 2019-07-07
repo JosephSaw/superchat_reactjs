@@ -1,13 +1,24 @@
 import { FETCH_MESSAGES, SEND_MESSAGE, CHANGE_CURRENT_ROOM } from '../actions/types'
+import messagesSnapshotReducer from './messagesSnapshot';
 
 function messagesReducer(state = {}, action) {
+    let newState = { ...state }
+
     switch (action.type) {
         case FETCH_MESSAGES:
-            return { ...state, ...action.payload };
+            // if (newState[action.payload.roomId] && newState[action.payload.roomId][newState[action.payload.roomId].length].sending) {
 
-        // case SEND_MESSAGE:
-        //     console.log({state, action})
-        //     return {...state, messages: [...state.messages, ...action.payload]}
+            // } else {
+            //     newState[action.payload.roomId] = action.payload.messages;
+            // }
+            console.log(state)
+            console.log(action.payload)
+            newState[action.payload.roomId] = action.payload.messages;
+            return newState;
+
+        case SEND_MESSAGE:
+            newState[action.payload.roomId] = action.payload.currentMessages;
+            return newState;
 
         default:
             return state;
