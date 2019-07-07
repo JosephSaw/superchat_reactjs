@@ -117,8 +117,8 @@ const renderReceivedFriendRequests = (friendsList, functions, currentUser, disab
                                 <Button disabled={disabled} style={{ marginRight: '15px' }} variant="outline-secondary"><FontAwesomeIcon icon={fasTimes} /></Button>
                             </OverlayTrigger>
 
-                            <OverlayTrigger placement='top' overlay={<Tooltip>Accept friend request</Tooltip>}>
-                                <Button disabled={disabled}>{disabled ? <FontAwesomeIcon icon={fasSpinner} spin /> : <FontAwesomeIcon icon={fasCheck} onClick={(e) => acceptFriendRequest(e, data, currentUser, functions, setDisabled, dispatch)} />}</Button>
+                            <OverlayTrigger  placement='top' overlay={<Tooltip>Accept friend request</Tooltip>}>
+                                <Button onClick={(e) => acceptFriendRequest(e, data, currentUser, functions, setDisabled, dispatch)} disabled={disabled}>{disabled ? <FontAwesomeIcon icon={fasSpinner} spin /> : <FontAwesomeIcon icon={fasCheck} />}</Button>
                             </OverlayTrigger>
 
                         </Card.Subtitle>
