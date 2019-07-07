@@ -121,7 +121,7 @@ export default function Users(props) {
     }
 
     return (
-        <Container style={{ padding: '0', backgroundColor: '#fff'}} fluid className="app-container">
+        <Container style={{ padding: '0', backgroundColor: '#fff' }} fluid className="app-container">
             {/* <UserHeader /> */}
 
             {/* <Row> */}
@@ -143,6 +143,14 @@ export default function Users(props) {
             <Container>
                 <Row>
                     {column}
+                </Row>
+            </Container>
+
+            <Container>
+                <Row>
+                    <Button onClick={(e) => {
+                        props.handleTutorialModal(props.showModal, props.setShowModal);
+                    }}>Tutorial</Button>
                 </Row>
             </Container>
 

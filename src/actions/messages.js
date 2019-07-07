@@ -32,8 +32,6 @@ export const sendMessage = (message, roomId, dispatch, currentMessages, currentU
 
     console.log('test');
     httpSendMessage({ message, type: "text", roomId }).then(response => {
-        console.log({ response })
-        console.log('sent successful!');
     });
     // .then(response => {
     //     document.getElementById('messageField').value = "";
