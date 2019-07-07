@@ -8,8 +8,6 @@ export const subscribeToChatrooms = (db, dispatch, currentUserId) => {
             return tempChatroomObj;
         });
 
-        console.log(chatrooms)
-
         dispatch({ type: UPDATE_CHATROOMS, payload: chatrooms });
     })
 }

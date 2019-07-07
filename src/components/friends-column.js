@@ -13,7 +13,6 @@ const startChat = (e, functions, currentUser, friend, db, dispatch) => {
     let startChat = functions.httpsCallable('startChat');
 
     startChat({ friendUserId: friend.id, friendUsername: friend.username, currentUsername: currentUser.username, currentUserFcmToken: currentUser.fcmToken }).then((response) => {
-        console.log(response);
 
         if (!response.data.success)
             return;

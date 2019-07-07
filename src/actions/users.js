@@ -15,6 +15,6 @@ export const fetchUsers = (db, dispatch, currentUserId) => {
             dispatch({ type: FETCH_USERS, payload: [...tempUserArray] });
         });
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }

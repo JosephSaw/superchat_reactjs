@@ -11,8 +11,6 @@ function messagesReducer(state = {}, action) {
             // } else {
             //     newState[action.payload.roomId] = action.payload.messages;
             // }
-            console.log(state)
-            console.log(action.payload)
             newState[action.payload.roomId] = action.payload.messages;
             return newState;
 

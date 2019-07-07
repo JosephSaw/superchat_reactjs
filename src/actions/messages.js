@@ -19,18 +19,16 @@ export const fetchMessages = (db, dispatch, roomId = "") => {
         }))
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 // (firebase, db, dispatch, roomId, message, currentUserId)
 export const sendMessage = (message, roomId, dispatch, currentMessages, currentUserId, httpSendMessage) => {
     let newMessageObj = { message, from: currentUserId, type: 'text', sending: true, id: message }
     currentMessages.push(newMessageObj);
-    console.log(currentMessages)
 
     dispatch({ type: SEND_MESSAGE, payload: { currentMessages, roomId } });
 
-    console.log('test');
     httpSendMessage({ message, type: "text", roomId }).then(response => {
     });
     // .then(response => {

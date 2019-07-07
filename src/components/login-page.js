@@ -55,7 +55,17 @@ async function createProfile(props, dispatch, setDisabled) {
 
         });
     }).catch((e) => {
-        console.log(`Error occured ${e}`);
+        console.error(`Error occured ${e}`);
+        props.auth.signInAnonymously().then((firebaseUser) => {
+            props.db.collection('Users').doc(firebaseUser.user.uid).set({ username: profileName, avatar: 2, fcmToken: '', searchKey: profileName.charAt(0).toUpperCase() }).then(() => {
+                props.db.collection('Users').doc(firebaseUser.user.uid).get().then(docSnapshot => {
+                    let userData = docSnapshot.data()
+                    dispatch({ type: SUCCESSFUL_LOGIN, payload: { id: firebaseUser.user.uid, username: userData.username, loggedIn: true, fcmToken: userData.fcmToken } });
+                    props.history.push('/app');
+                })
+            })
+
+        });
     })
 
 }
